@@ -19,7 +19,7 @@ struct HandGestureExampleApp: App {
     }
     
     ImmersiveSpace(id: appModel.immersiveSpaceID) {
-      ImmersiveView()
+      ImmersiveView(gestureModel: HeartGestureModelContainer.handGestureModel)
         .environment(appModel)
         .onAppear {
           appModel.immersiveSpaceState = .open
@@ -30,4 +30,10 @@ struct HandGestureExampleApp: App {
     }
     .immersionStyle(selection: .constant(.mixed), in: .mixed)
   }
+}
+
+
+@MainActor
+enum HeartGestureModelContainer {
+    private(set) static var handGestureModel = HandGestureModel()
 }
