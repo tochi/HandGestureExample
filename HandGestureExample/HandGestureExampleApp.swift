@@ -14,7 +14,7 @@ struct HandGestureExampleApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      ContentView(gestureModel: HeartGestureModelContainer.handGestureModel)
         .environment(appModel)
     }
     
