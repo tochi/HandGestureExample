@@ -66,18 +66,38 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     }
   }
   
-  func rightHandAnchorOriginFromAnchorTransfor() -> simd_float4x4? {
-    guard let rightHandAnchor = latestHandTracking.right, rightHandAnchor.isTracked else {
-      return nil
-    }
+  func rightHandAnchorOriginFromAnchorTransform() -> simd_float4x4? {
+    guard let rightHandAnchor = latestHandTracking.right, rightHandAnchor.isTracked else { return nil }
     return rightHandAnchor.originFromAnchorTransform
   }
   
-  func leftHandAnchorOriginFromAnchorTransfor() -> simd_float4x4? {
-    guard let leftHandAnchor = latestHandTracking.left, leftHandAnchor.isTracked else {
-      return nil
-    }
+  func leftHandAnchorOriginFromAnchorTransform() -> simd_float4x4? {
+    guard let leftHandAnchor = latestHandTracking.left, leftHandAnchor.isTracked else { return nil }
     return leftHandAnchor.originFromAnchorTransform
+  }
+
+  func rightHandIndexFingerTipAnchorFromJointTransform() -> simd_float4x4? {
+    guard let rightHandIndexFingerTip = latestHandTracking.right?.handSkeleton?.joint(.indexFingerTip),
+          rightHandIndexFingerTip.isTracked  else { return nil }
+    return rightHandIndexFingerTip.anchorFromJointTransform
+  }
+  
+  func originFromRightHandIndexFingerTipTransform() -> simd_float4x4? {
+    guard let rightHandAnchorOriginFromAnchorTransfor = rightHandAnchorOriginFromAnchorTransform(),
+          let rightHandIndexFingerTipAnchorFromJointTransform = rightHandIndexFingerTipAnchorFromJointTransform() else { return nil }
+    return matrix_multiply(rightHandAnchorOriginFromAnchorTransfor, rightHandIndexFingerTipAnchorFromJointTransform)
+  }
+  
+  func leftHandIndexFingerTipAnchorFromJointTransform() -> simd_float4x4? {
+    guard let leftHandIndexFingerTip = latestHandTracking.left?.handSkeleton?.joint(.indexFingerTip),
+          leftHandIndexFingerTip.isTracked  else { return nil }
+    return leftHandIndexFingerTip.anchorFromJointTransform
+  }
+  
+  func originFromLeftHandIndexFingerTipTransform() -> simd_float4x4? {
+    guard let leftHandAnchorOriginFromAnchorTransfor = leftHandAnchorOriginFromAnchorTransform(),
+          let leftHandIndexFingerTipAnchorFromJointTransform = leftHandIndexFingerTipAnchorFromJointTransform() else { return nil }
+    return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandIndexFingerTipAnchorFromJointTransform)
   }
   
   /// Computes a transform representing the heart gesture performed by the user.

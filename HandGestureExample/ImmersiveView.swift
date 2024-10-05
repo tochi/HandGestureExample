@@ -14,9 +14,8 @@ struct ImmersiveView: View {
   
   var body: some View {
     RealityView { content in
-    } update: { _ in
-      print("Left Hand: \(String(describing: gestureModel.leftHandAnchorOriginFromAnchorTransfor()?.columns.3.xyz))")
-      print("Right Hand: \(String(describing: gestureModel.rightHandAnchorOriginFromAnchorTransfor()?.columns.3.xyz))")
+
+
     }
     .task {
       await gestureModel.start()
