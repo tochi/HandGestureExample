@@ -22,8 +22,20 @@ struct ContentView: View {
       .padding(padding)
       Spacer()
       HStack() {
-        fingerAnchorLogView(title: "Left", originFromFingerTransform: gestureModel.originFromLeftHandIndexFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.leftHandIndexFingerTipAnchorFromJointTransform())
-        fingerAnchorLogView(title: "Right", originFromFingerTransform: gestureModel.originFromRightHandIndexFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.rightHandIndexFingerTipAnchorFromJointTransform())
+        fingerAnchorLogView(title: "Left Index", originFromFingerTransform: gestureModel.originFromLeftHandIndexFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.leftHandIndexFingerTipAnchorFromJointTransform())
+        fingerAnchorLogView(title: "Right Index", originFromFingerTransform: gestureModel.originFromRightHandIndexFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.rightHandIndexFingerTipAnchorFromJointTransform())
+      }
+      .padding(padding)
+      Spacer()
+      HStack() {
+        fingerAnchorLogView(title: "Left Middle", originFromFingerTransform: gestureModel.originFromLeftHandMiddleFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.leftHandMiddleFingerTipAnchorFromJointTransform())
+        fingerAnchorLogView(title: "Right Middle", originFromFingerTransform: gestureModel.originFromRightHandMiddleFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.rightHandMiddleFingerTipAnchorFromJointTransform())
+      }
+      .padding(padding)
+      Spacer()
+      HStack() {
+        handDirectionView(title: "Left", xLeftSideFinger: gestureModel.originFromLeftHandMiddleFingerTipTransform()?.columns.3.x, xRightSideFinger: gestureModel.originFromLeftHandIndexFingerTipTransform()?.columns.3.x)
+        handDirectionView(title: "Right", xLeftSideFinger: gestureModel.originFromRightHandIndexFingerTipTransform()?.columns.3.x, xRightSideFinger: gestureModel.originFromRightHandMiddleFingerTipTransform()?.columns.3.x)
       }
       .padding(padding)
       Spacer()
@@ -50,7 +62,7 @@ struct ContentView: View {
   
   func fingerAnchorLogView(title: String, originFromFingerTransform: simd_float4x4?, fingerAnchorFromJointTransform: simd_float4x4?) -> some View {
     VStack(alignment: .leading) {
-      Text("\(title) Index Finger Tip Anchor")
+      Text("\(title) Finger Tip Anchor")
         .font(.title)
       if (fingerAnchorFromJointTransform != nil) {
         Text("x: \(String(describing: roundUp(originFromFingerTransform!.columns.3.x))) (\(String(describing: roundUp(fingerAnchorFromJointTransform!.columns.3.x))))")
@@ -64,8 +76,28 @@ struct ContentView: View {
     }
   }
   
-  private func roundUp(_ value: Float) -> Float {
+  func roundUp(_ value: Float) -> Float {
     floor(value * 1000) / 1000
+  }
+  
+  func handDirectionView(title: String, xLeftSideFinger: Float?, xRightSideFinger: Float?) -> some View {
+    if let xLeft = xLeftSideFinger, let xRight = xRightSideFinger {
+      var value = "Back"
+      if (xRight < xLeft) {
+        value = "Front"
+      }
+      return VStack(alignment: .leading) {
+        Text(title)
+          .font(.title)
+        Text(value)
+      }
+    } else {
+      return VStack(alignment: .leading) {
+        Text(title)
+          .font(.title)
+        Text("None")
+      }
+    }
   }
 }
 

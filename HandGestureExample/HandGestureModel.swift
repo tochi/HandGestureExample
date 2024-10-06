@@ -71,11 +71,6 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     return rightHandAnchor.originFromAnchorTransform
   }
   
-  func leftHandAnchorOriginFromAnchorTransform() -> simd_float4x4? {
-    guard let leftHandAnchor = latestHandTracking.left, leftHandAnchor.isTracked else { return nil }
-    return leftHandAnchor.originFromAnchorTransform
-  }
-
   func rightHandIndexFingerTipAnchorFromJointTransform() -> simd_float4x4? {
     guard let rightHandIndexFingerTip = latestHandTracking.right?.handSkeleton?.joint(.indexFingerTip),
           rightHandIndexFingerTip.isTracked  else { return nil }
@@ -87,7 +82,24 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
           let rightHandIndexFingerTipAnchorFromJointTransform = rightHandIndexFingerTipAnchorFromJointTransform() else { return nil }
     return matrix_multiply(rightHandAnchorOriginFromAnchorTransfor, rightHandIndexFingerTipAnchorFromJointTransform)
   }
+
+  func rightHandMiddleFingerTipAnchorFromJointTransform() -> simd_float4x4? {
+    guard let rightHandMiddleFingerTip = latestHandTracking.right?.handSkeleton?.joint(.middleFingerTip),
+          rightHandMiddleFingerTip.isTracked  else { return nil }
+    return rightHandMiddleFingerTip.anchorFromJointTransform
+  }
   
+  func originFromRightHandMiddleFingerTipTransform() -> simd_float4x4? {
+    guard let rightHandAnchorOriginFromAnchorTransfor = rightHandAnchorOriginFromAnchorTransform(),
+          let rightHandMiddleFingerTipAnchorFromJointTransform = rightHandMiddleFingerTipAnchorFromJointTransform() else { return nil }
+    return matrix_multiply(rightHandAnchorOriginFromAnchorTransfor, rightHandMiddleFingerTipAnchorFromJointTransform)
+  }
+
+  func leftHandAnchorOriginFromAnchorTransform() -> simd_float4x4? {
+    guard let leftHandAnchor = latestHandTracking.left, leftHandAnchor.isTracked else { return nil }
+    return leftHandAnchor.originFromAnchorTransform
+  }
+
   func leftHandIndexFingerTipAnchorFromJointTransform() -> simd_float4x4? {
     guard let leftHandIndexFingerTip = latestHandTracking.left?.handSkeleton?.joint(.indexFingerTip),
           leftHandIndexFingerTip.isTracked  else { return nil }
@@ -98,6 +110,18 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     guard let leftHandAnchorOriginFromAnchorTransfor = leftHandAnchorOriginFromAnchorTransform(),
           let leftHandIndexFingerTipAnchorFromJointTransform = leftHandIndexFingerTipAnchorFromJointTransform() else { return nil }
     return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandIndexFingerTipAnchorFromJointTransform)
+  }
+  
+  func leftHandMiddleFingerTipAnchorFromJointTransform() -> simd_float4x4? {
+    guard let leftHandMiddleFingerTip = latestHandTracking.left?.handSkeleton?.joint(.middleFingerTip),
+          leftHandMiddleFingerTip.isTracked  else { return nil }
+    return leftHandMiddleFingerTip.anchorFromJointTransform
+  }
+  
+  func originFromLeftHandMiddleFingerTipTransform() -> simd_float4x4? {
+    guard let leftHandAnchorOriginFromAnchorTransfor = leftHandAnchorOriginFromAnchorTransform(),
+          let leftHandMiddleFingerTipAnchorFromJointTransform = leftHandMiddleFingerTipAnchorFromJointTransform() else { return nil }
+    return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandMiddleFingerTipAnchorFromJointTransform)
   }
   
   /// Computes a transform representing the heart gesture performed by the user.
