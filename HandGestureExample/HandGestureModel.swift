@@ -124,6 +124,21 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandMiddleFingerTipAnchorFromJointTransform)
   }
   
+  func rightHandFingerCenterTransform() -> simd_float4x4? {
+    guard let originFromRightHandIndexFingerTipTransform = originFromRightHandIndexFingerTipTransform(),
+          let originFromRightHandMiddleFingerTipTransform = originFromRightHandMiddleFingerTipTransform() else { return nil }
+    let position1 = originFromRightHandIndexFingerTipTransform.columns.3.xyz
+    let position2 = originFromRightHandMiddleFingerTipTransform.columns.3.xyz
+    
+    let centerPosition = (position1 + position2) * 0.5
+    
+    var centerMatrix = matrix_identity_float4x4
+    centerMatrix.columns.3 = simd_float4(centerPosition, 1)
+    
+    return centerMatrix
+  }
+
+  
   /// Computes a transform representing the heart gesture performed by the user.
   ///
   /// - Returns:

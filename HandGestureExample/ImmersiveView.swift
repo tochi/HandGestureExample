@@ -14,8 +14,14 @@ struct ImmersiveView: View {
   
   var body: some View {
     RealityView { content in
-
-
+      let sphereMesh = MeshResource.generateSphere(radius: 0.005)
+      let material = SimpleMaterial(color: .red, isMetallic: true)
+      let sphereEntity = ModelEntity(mesh: sphereMesh, materials: [material])
+      content.add(sphereEntity)
+    } update: { content in
+      if let rightHandFingerCenterTransform = gestureModel.rightHandFingerCenterTransform(), let sphereEntity = content.entities.first as? ModelEntity {
+        sphereEntity.transform = Transform(matrix: rightHandFingerCenterTransform)
+      }
     }
     .task {
       await gestureModel.start()
