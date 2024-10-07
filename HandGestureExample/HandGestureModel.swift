@@ -94,6 +94,20 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
           let rightHandMiddleFingerTipAnchorFromJointTransform = rightHandMiddleFingerTipAnchorFromJointTransform() else { return nil }
     return matrix_multiply(rightHandAnchorOriginFromAnchorTransfor, rightHandMiddleFingerTipAnchorFromJointTransform)
   }
+  
+  func rightHandFingerCenterTransform() -> simd_float4x4? {
+    guard let originFromRightHandIndexFingerTipTransform = originFromRightHandIndexFingerTipTransform(),
+          let originFromRightHandMiddleFingerTipTransform = originFromRightHandMiddleFingerTipTransform() else { return nil }
+    let position1 = originFromRightHandIndexFingerTipTransform.columns.3.xyz
+    let position2 = originFromRightHandMiddleFingerTipTransform.columns.3.xyz
+    
+    let centerPosition = (position1 + position2) * 0.5
+    
+    var centerMatrix = matrix_identity_float4x4
+    centerMatrix.columns.3 = simd_float4(centerPosition, 1)
+    
+    return centerMatrix
+  }
 
   func leftHandAnchorOriginFromAnchorTransform() -> simd_float4x4? {
     guard let leftHandAnchor = latestHandTracking.left, leftHandAnchor.isTracked else { return nil }
@@ -124,11 +138,11 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
     return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandMiddleFingerTipAnchorFromJointTransform)
   }
   
-  func rightHandFingerCenterTransform() -> simd_float4x4? {
-    guard let originFromRightHandIndexFingerTipTransform = originFromRightHandIndexFingerTipTransform(),
-          let originFromRightHandMiddleFingerTipTransform = originFromRightHandMiddleFingerTipTransform() else { return nil }
-    let position1 = originFromRightHandIndexFingerTipTransform.columns.3.xyz
-    let position2 = originFromRightHandMiddleFingerTipTransform.columns.3.xyz
+  func leftHandFingerCenterTransform() -> simd_float4x4? {
+    guard let originFromLeftHandIndexFingerTipTransform = originFromLeftHandIndexFingerTipTransform(),
+          let originFromLeftHandMiddleFingerTipTransform = originFromLeftHandMiddleFingerTipTransform() else { return nil }
+    let position1 = originFromLeftHandIndexFingerTipTransform.columns.3.xyz
+    let position2 = originFromLeftHandMiddleFingerTipTransform.columns.3.xyz
     
     let centerPosition = (position1 + position2) * 0.5
     
