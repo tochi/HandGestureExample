@@ -14,6 +14,7 @@ struct ImmersiveView: View {
   
   var body: some View {
     RealityView { content in
+      content.add(createMarker(name: "origin", radius: 0.1))
       content.add(createMarker(name: "leftHand", radius: 0.05))
       content.add(createMarker(name: "rightHand", radius: 0.05))
       content.add(createMarker(name: "leftIndexFinger", radius: 0.01))
@@ -23,6 +24,15 @@ struct ImmersiveView: View {
       content.add(createSphere(name: "leftCenter"))
       content.add(createSphere(name: "rightCenter"))
     } update: { content in
+      if let markerEntity = content.entities.first(where: { $0.name == "origin" }) as? ModelEntity {
+        let matrix = simd_float4x4(
+            SIMD4<Float>(1, 0, 0, 0),
+            SIMD4<Float>(0, 1, 0, 0),
+            SIMD4<Float>(0, 0, 1, 0),
+            SIMD4<Float>(0, 0, 0, 1)
+        )
+        markerEntity.transform = Transform(matrix: matrix)
+      }
       if let transform = gestureModel.leftHandAnchorOriginFromAnchorTransform(), let markerEntity = content.entities.first(where: { $0.name == "leftHand" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
