@@ -14,13 +14,13 @@ struct ImmersiveView: View {
   
   var body: some View {
     RealityView { content in
-      content.add(createMarker(name: "origin", radius: 0.1))
-      content.add(createMarker(name: "leftHand", radius: 0.05))
-      content.add(createMarker(name: "rightHand", radius: 0.05))
-      content.add(createMarker(name: "leftIndexFinger", radius: 0.01))
-      content.add(createMarker(name: "rightIndexFinger", radius: 0.01))
-      content.add(createMarker(name: "leftMiddleFinger", radius: 0.01))
-      content.add(createMarker(name: "rightMiddleFinger", radius: 0.01))
+      content.add(createMarker(name: "origin", radius: 0.1, length: 0.5))
+      content.add(createMarker(name: "leftHand", radius: 0.005, length: 0.1))
+      content.add(createMarker(name: "rightHand", radius: 0.005, length: 0.1))
+      content.add(createMarker(name: "leftIndexFinger", radius: 0.001, length: 0.03))
+      content.add(createMarker(name: "rightIndexFinger", radius: 0.001, length: 0.03))
+      content.add(createMarker(name: "leftMiddleFinger", radius: 0.001, length: 0.03))
+      content.add(createMarker(name: "rightMiddleFinger", radius: 0.001, length: 0.03))
       content.add(createSphere(name: "leftCenter"))
       content.add(createSphere(name: "rightCenter"))
     } update: { content in
@@ -68,20 +68,54 @@ struct ImmersiveView: View {
       await gestureModel.monitorSessionEvents()
     }
   }
-  func createMarker(name: String, radius: Float) -> ModelEntity {
-    let sphereMesh = MeshResource.generateSphere(radius: radius)
-    let material = SimpleMaterial(color: .gray, isMetallic: false)
-    let sphereEntity = ModelEntity(mesh: sphereMesh, materials: [material])
-    sphereEntity.name = name
-    return sphereEntity
-  }
-  
+
   func createSphere(name: String) -> ModelEntity {
     let sphereMesh = MeshResource.generateSphere(radius: 0.005)
     let material = SimpleMaterial(color: .red, isMetallic: true)
     let sphereEntity = ModelEntity(mesh: sphereMesh, materials: [material])
     sphereEntity.name = name
     return sphereEntity
+  }
+  
+  func createMarker(name: String, radius: Float, length: Float) -> ModelEntity {
+      let originEntity = ModelEntity(mesh: .generateSphere(radius: radius),
+                                     materials: [SimpleMaterial(color: .white, isMetallic: false)])
+      let axisLength: Float = length
+      let xAxis = createAxisLine(length: axisLength, color: .red, alignment: .x)
+      originEntity.addChild(xAxis)
+      let yAxis = createAxisLine(length: axisLength, color: .green, alignment: .y)
+      originEntity.addChild(yAxis)
+      let zAxis = createAxisLine(length: axisLength, color: .blue, alignment: .z)
+      originEntity.addChild(zAxis)
+    originEntity.name = name
+      return originEntity
+  }
+
+  func createAxisLine(length: Float, color: UIColor, alignment: Alignment) -> ModelEntity {
+      let thickness: Float = 0.001
+      var size: SIMD3<Float>
+      var position: SIMD3<Float>
+      
+      switch alignment {
+      case .x:
+          size = [length, thickness, thickness]
+          position = [length / 2, 0, 0]
+      case .y:
+          size = [thickness, length, thickness]
+          position = [0, length / 2, 0]
+      case .z:
+          size = [thickness, thickness, length]
+          position = [0, 0, length / 2]
+      }
+      
+      let axis = ModelEntity(mesh: .generateBox(size: size),
+                             materials: [SimpleMaterial(color: color, isMetallic: false)])
+      axis.position = position
+      return axis
+  }
+  
+  enum Alignment {
+      case x, y, z
   }
 }
 
