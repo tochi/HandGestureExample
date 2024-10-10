@@ -92,7 +92,7 @@ struct ImmersiveView: View {
   }
 
   func createAxisLine(length: Float, color: UIColor, alignment: Alignment) -> ModelEntity {
-      let thickness: Float = 0.001
+      let thickness: Float = 0.003
       var size: SIMD3<Float>
       var position: SIMD3<Float>
       

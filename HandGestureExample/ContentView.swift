@@ -13,28 +13,32 @@ struct ContentView: View {
   let padding = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
   
   var body: some View {
-    VStack(alignment: .leading) {
+    VStack() {
       Spacer()
       HStack() {
         handAnchorLogView(title: "Left", handAnchorOriginFromAnchorTransform: gestureModel.leftHandAnchorOriginFromAnchorTransform())
+          .padding()
         handAnchorLogView(title: "Right", handAnchorOriginFromAnchorTransform: gestureModel.rightHandAnchorOriginFromAnchorTransform())
       }
       .padding(padding)
       Spacer()
       HStack() {
         fingerAnchorLogView(title: "Left Index", originFromFingerTransform: gestureModel.originFromLeftHandIndexFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.leftHandIndexFingerTipAnchorFromJointTransform())
+          .padding()
         fingerAnchorLogView(title: "Right Index", originFromFingerTransform: gestureModel.originFromRightHandIndexFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.rightHandIndexFingerTipAnchorFromJointTransform())
       }
       .padding(padding)
       Spacer()
       HStack() {
         fingerAnchorLogView(title: "Left Middle", originFromFingerTransform: gestureModel.originFromLeftHandMiddleFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.leftHandMiddleFingerTipAnchorFromJointTransform())
+          .padding()
         fingerAnchorLogView(title: "Right Middle", originFromFingerTransform: gestureModel.originFromRightHandMiddleFingerTipTransform(), fingerAnchorFromJointTransform: gestureModel.rightHandMiddleFingerTipAnchorFromJointTransform())
       }
       .padding(padding)
       Spacer()
       HStack() {
         handDirectionView(title: "Left", xLeftSideFinger: gestureModel.originFromLeftHandMiddleFingerTipTransform()?.columns.3.x, xRightSideFinger: gestureModel.originFromLeftHandIndexFingerTipTransform()?.columns.3.x)
+          .padding()
         handDirectionView(title: "Right", xLeftSideFinger: gestureModel.originFromRightHandIndexFingerTipTransform()?.columns.3.x, xRightSideFinger: gestureModel.originFromRightHandMiddleFingerTipTransform()?.columns.3.x)
       }
       .padding(padding)
