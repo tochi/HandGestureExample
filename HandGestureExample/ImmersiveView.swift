@@ -33,22 +33,22 @@ struct ImmersiveView: View {
         )
         markerEntity.transform = Transform(matrix: matrix)
       }
-      if let transform = gestureModel.leftHandAnchorOriginFromAnchorTransform(), let markerEntity = content.entities.first(where: { $0.name == "leftHand" }) as? ModelEntity {
+      if let transform = gestureModel.leftHandAnchorOriginFromAnchorTransform, let markerEntity = content.entities.first(where: { $0.name == "leftHand" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
-      if let transform = gestureModel.rightHandAnchorOriginFromAnchorTransform(), let markerEntity = content.entities.first(where: { $0.name == "rightHand" }) as? ModelEntity {
+      if let transform = gestureModel.rightHandAnchorOriginFromAnchorTransform, let markerEntity = content.entities.first(where: { $0.name == "rightHand" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
-      if let transform = gestureModel.originFromLeftHandIndexFingerTipTransform(), let markerEntity = content.entities.first(where: { $0.name == "leftIndexFinger" }) as? ModelEntity {
+      if let transform = gestureModel.originFromLeftHandIndexFingerTipTransform, let markerEntity = content.entities.first(where: { $0.name == "leftIndexFinger" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
-      if let transform = gestureModel.originFromRightHandIndexFingerTipTransform(), let markerEntity = content.entities.first(where: { $0.name == "rightIndexFinger" }) as? ModelEntity {
+      if let transform = gestureModel.originFromRightHandIndexFingerTipTransform, let markerEntity = content.entities.first(where: { $0.name == "rightIndexFinger" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
-      if let transform = gestureModel.originFromLeftHandMiddleFingerTipTransform(), let markerEntity = content.entities.first(where: { $0.name == "leftMiddleFinger" }) as? ModelEntity {
+      if let transform = gestureModel.originFromLeftHandMiddleFingerTipTransform, let markerEntity = content.entities.first(where: { $0.name == "leftMiddleFinger" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
-      if let transform = gestureModel.originFromRightHandMiddleFingerTipTransform(), let markerEntity = content.entities.first(where: { $0.name == "rightMiddleFinger" }) as? ModelEntity {
+      if let transform = gestureModel.originFromRightHandMiddleFingerTipTransform, let markerEntity = content.entities.first(where: { $0.name == "rightMiddleFinger" }) as? ModelEntity {
         markerEntity.transform = Transform(matrix: transform)
       }
       if let transform = gestureModel.leftHandFingerCenterTransform(), let sphereEntity = content.entities.first(where: { $0.name == "leftCenter" }) as? ModelEntity {
