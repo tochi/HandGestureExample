@@ -1,10 +1,3 @@
-//
-//  HandGestureExampleApp.swift
-//  HandGestureExample
-//
-//  Created by Tomoyuki Tochihira on 2024/10/01.
-//
-
 import SwiftUI
 
 @main

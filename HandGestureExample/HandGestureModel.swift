@@ -1,15 +1,6 @@
-/*
- See the LICENSE.txt file for this sample’s licensing information.
- 
- Abstract:
- Hand tracking updates.
- */
-
 import ARKit
 import SwiftUI
 
-// https://zenn.dev/koichi_51/articles/8d768ea8b6907d
-/// A model that contains up-to-date hand coordinate information.
 @MainActor
 class HandGestureModel: ObservableObject, @unchecked Sendable {
   let session = ARKitSession()
@@ -86,14 +77,11 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
       switch update.event {
       case .updated:
         let anchor = update.anchor
-        
-        // Publish updates only if the hand and the relevant joints are tracked.
         guard anchor.isTracked else { continue }
         
-        // Update left hand info.
         if anchor.chirality == .left {
           latestHandTracking.left = anchor
-        } else if anchor.chirality == .right { // Update right hand info.
+        } else if anchor.chirality == .right {
           latestHandTracking.right = anchor
         }
       default:

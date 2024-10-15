@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  HandGestureExample
-//
-//  Created by Tomoyuki Tochihira on 2024/10/01.
-//
-
 import SwiftUI
 import RealityKit
 
@@ -52,10 +45,10 @@ struct ContentView: View {
     VStack(alignment: .leading) {
       Text("\(title) Hand Anchor")
         .font(.title)
-      if (handAnchorOriginFromAnchorTransform != nil) {
-        Text("x: \(String(describing: roundUp(handAnchorOriginFromAnchorTransform!.columns.3.x)))")
-        Text("y: \(String(describing: roundUp(handAnchorOriginFromAnchorTransform!.columns.3.y)))")
-        Text("z: \(String(describing: roundUp(handAnchorOriginFromAnchorTransform!.columns.3.z)))")
+      if let handAnchorOriginFromAnchorTransform = handAnchorOriginFromAnchorTransform {
+        Text("x: \(String(describing: roundUp(handAnchorOriginFromAnchorTransform.columns.3.x)))")
+        Text("y: \(String(describing: roundUp(handAnchorOriginFromAnchorTransform.columns.3.y)))")
+        Text("z: \(String(describing: roundUp(handAnchorOriginFromAnchorTransform.columns.3.z)))")
       } else {
         Text("x:")
         Text("y:")
@@ -68,10 +61,10 @@ struct ContentView: View {
     VStack(alignment: .leading) {
       Text("\(title) Finger Tip Anchor")
         .font(.title)
-      if (fingerAnchorFromJointTransform != nil) {
-        Text("x: \(String(describing: roundUp(originFromFingerTransform!.columns.3.x))) (\(String(describing: roundUp(fingerAnchorFromJointTransform!.columns.3.x))))")
-        Text("y: \(String(describing: roundUp(originFromFingerTransform!.columns.3.y))) (\(String(describing: roundUp(fingerAnchorFromJointTransform!.columns.3.y))))")
-        Text("z: \(String(describing: roundUp(originFromFingerTransform!.columns.3.z))) (\(String(describing: roundUp(fingerAnchorFromJointTransform!.columns.3.z))))")
+      if let originFromFingerTransform = originFromFingerTransform, let fingerAnchorFromJointTransform = fingerAnchorFromJointTransform {
+        Text("x: \(String(describing: roundUp(originFromFingerTransform.columns.3.x))) (\(String(describing: roundUp(fingerAnchorFromJointTransform.columns.3.x))))")
+        Text("y: \(String(describing: roundUp(originFromFingerTransform.columns.3.y))) (\(String(describing: roundUp(fingerAnchorFromJointTransform.columns.3.y))))")
+        Text("z: \(String(describing: roundUp(originFromFingerTransform.columns.3.z))) (\(String(describing: roundUp(fingerAnchorFromJointTransform.columns.3.z))))")
       } else {
         Text("x:")
         Text("y:")
