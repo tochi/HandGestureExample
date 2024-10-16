@@ -15,20 +15,10 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
           rightHandIndexFingerTip.isTracked  else { return nil }
     return rightHandIndexFingerTip.anchorFromJointTransform
   }
-  var rightHandMiddleFingerTipAnchorFromJointTransform: simd_float4x4? {
-    guard let rightHandMiddleFingerTip = latestHandTracking.right?.handSkeleton?.joint(.middleFingerTip),
-          rightHandMiddleFingerTip.isTracked  else { return nil }
-    return rightHandMiddleFingerTip.anchorFromJointTransform
-  }
   var originFromRightHandIndexFingerTipTransform: simd_float4x4? {
     guard let rightHandAnchorOriginFromAnchorTransfor = rightHandAnchorOriginFromAnchorTransform,
           let rightHandIndexFingerTipAnchorFromJointTransform = rightHandIndexFingerTipAnchorFromJointTransform else { return nil }
     return matrix_multiply(rightHandAnchorOriginFromAnchorTransfor, rightHandIndexFingerTipAnchorFromJointTransform)
-  }
-  var originFromRightHandMiddleFingerTipTransform: simd_float4x4? {
-    guard let rightHandAnchorOriginFromAnchorTransfor = rightHandAnchorOriginFromAnchorTransform,
-          let rightHandMiddleFingerTipAnchorFromJointTransform = rightHandMiddleFingerTipAnchorFromJointTransform else { return nil }
-    return matrix_multiply(rightHandAnchorOriginFromAnchorTransfor, rightHandMiddleFingerTipAnchorFromJointTransform)
   }
 
   var leftHandAnchorOriginFromAnchorTransform: simd_float4x4? {
@@ -40,20 +30,10 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
           leftHandIndexFingerTip.isTracked  else { return nil }
     return leftHandIndexFingerTip.anchorFromJointTransform
   }
-  var leftHandMiddleFingerTipAnchorFromJointTransform: simd_float4x4? {
-    guard let leftHandMiddleFingerTip = latestHandTracking.left?.handSkeleton?.joint(.middleFingerTip),
-          leftHandMiddleFingerTip.isTracked  else { return nil }
-    return leftHandMiddleFingerTip.anchorFromJointTransform
-  }
   var originFromLeftHandIndexFingerTipTransform: simd_float4x4? {
     guard let leftHandAnchorOriginFromAnchorTransfor = leftHandAnchorOriginFromAnchorTransform,
           let leftHandIndexFingerTipAnchorFromJointTransform = leftHandIndexFingerTipAnchorFromJointTransform else { return nil }
     return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandIndexFingerTipAnchorFromJointTransform)
-  }
-  var originFromLeftHandMiddleFingerTipTransform: simd_float4x4? {
-    guard let leftHandAnchorOriginFromAnchorTransfor = leftHandAnchorOriginFromAnchorTransform,
-          let leftHandMiddleFingerTipAnchorFromJointTransform = leftHandMiddleFingerTipAnchorFromJointTransform else { return nil }
-    return matrix_multiply(leftHandAnchorOriginFromAnchorTransfor, leftHandMiddleFingerTipAnchorFromJointTransform)
   }
   
   struct HandsUpdates {
@@ -101,33 +81,5 @@ class HandGestureModel: ObservableObject, @unchecked Sendable {
         print("Session event \(event)")
       }
     }
-  }
-  
-  func rightHandFingerCenterTransform() -> simd_float4x4? {
-    guard let originFromRightHandIndexFingerTipTransform = originFromRightHandIndexFingerTipTransform,
-          let originFromRightHandMiddleFingerTipTransform = originFromRightHandMiddleFingerTipTransform else { return nil }
-    let position1 = originFromRightHandIndexFingerTipTransform.columns.3.xyz
-    let position2 = originFromRightHandMiddleFingerTipTransform.columns.3.xyz
-    
-    let centerPosition = (position1 + position2) * 0.5
-    
-    var centerMatrix = matrix_identity_float4x4
-    centerMatrix.columns.3 = simd_float4(centerPosition, 1)
-    
-    return centerMatrix
-  }
-  
-  func leftHandFingerCenterTransform() -> simd_float4x4? {
-    guard let originFromLeftHandIndexFingerTipTransform = originFromLeftHandIndexFingerTipTransform,
-          let originFromLeftHandMiddleFingerTipTransform = originFromLeftHandMiddleFingerTipTransform else { return nil }
-    let position1 = originFromLeftHandIndexFingerTipTransform.columns.3.xyz
-    let position2 = originFromLeftHandMiddleFingerTipTransform.columns.3.xyz
-    
-    let centerPosition = (position1 + position2) * 0.5
-    
-    var centerMatrix = matrix_identity_float4x4
-    centerMatrix.columns.3 = simd_float4(centerPosition, 1)
-    
-    return centerMatrix
   }
 }

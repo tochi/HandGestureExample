@@ -22,20 +22,6 @@ struct ContentView: View {
       }
       .padding(padding)
       Spacer()
-      HStack() {
-        fingerAnchorLogView(title: "Left Middle", originFromFingerTransform: gestureModel.originFromLeftHandMiddleFingerTipTransform, fingerAnchorFromJointTransform: gestureModel.leftHandMiddleFingerTipAnchorFromJointTransform)
-          .padding()
-        fingerAnchorLogView(title: "Right Middle", originFromFingerTransform: gestureModel.originFromRightHandMiddleFingerTipTransform, fingerAnchorFromJointTransform: gestureModel.rightHandMiddleFingerTipAnchorFromJointTransform)
-      }
-      .padding(padding)
-      Spacer()
-      HStack() {
-        handDirectionView(title: "Left", xLeftSideFinger: gestureModel.originFromLeftHandMiddleFingerTipTransform?.columns.3.x, xRightSideFinger: gestureModel.originFromLeftHandIndexFingerTipTransform?.columns.3.x)
-          .padding()
-        handDirectionView(title: "Right", xLeftSideFinger: gestureModel.originFromRightHandIndexFingerTipTransform?.columns.3.x, xRightSideFinger: gestureModel.originFromRightHandMiddleFingerTipTransform?.columns.3.x)
-      }
-      .padding(padding)
-      Spacer()
       ToggleImmersiveSpaceButton()
       Spacer()
     }
