@@ -8,21 +8,21 @@ struct ImmersiveView: View {
   var body: some View {
     RealityView { content in
       content.add(createMarker(name: "origin", radius: 0.1, length: 0.5))
-      content.add(createMarker(name: "leftHand", radius: 0.005, length: 0.1))
-      content.add(createMarker(name: "rightHand", radius: 0.005, length: 0.1))
-      content.add(createMarker(name: "leftIndexFinger", radius: 0.001, length: 0.03))
-      content.add(createMarker(name: "rightIndexFinger", radius: 0.001, length: 0.03))
-      content.add(createMarker(name: "leftMiddleFinger", radius: 0.001, length: 0.03))
-      content.add(createMarker(name: "rightMiddleFinger", radius: 0.001, length: 0.03))
+      content.add(createMakerForHand(name: "leftHand"))
+      content.add(createMakerForHand(name: "rightHand"))
+      content.add(createMakerForFinger(name: "leftIndexFinger"))
+      content.add(createMakerForFinger(name: "rightIndexFinger"))
+      content.add(createMakerForFinger(name: "leftMiddleFinger"))
+      content.add(createMakerForFinger(name: "rightMiddleFinger"))
       content.add(createSphere(name: "leftCenter"))
       content.add(createSphere(name: "rightCenter"))
     } update: { content in
       if let markerEntity = content.entities.first(where: { $0.name == "origin" }) as? ModelEntity {
         let matrix = simd_float4x4(
-            SIMD4<Float>(1, 0, 0, 0),
-            SIMD4<Float>(0, 1, 0, 0),
-            SIMD4<Float>(0, 0, 1, 0),
-            SIMD4<Float>(0, 0, 0, 1)
+          SIMD4<Float>(1, 0, 0, 0),
+          SIMD4<Float>(0, 1, 0, 0),
+          SIMD4<Float>(0, 0, 1, 0),
+          SIMD4<Float>(0, 0, 0, 1)
         )
         markerEntity.transform = Transform(matrix: matrix)
       }
@@ -61,8 +61,8 @@ struct ImmersiveView: View {
       await gestureModel.monitorSessionEvents()
     }
   }
-
-  func createSphere(name: String) -> ModelEntity {
+  
+  private func createSphere(name: String) -> ModelEntity {
     let sphereMesh = MeshResource.generateSphere(radius: 0.005)
     let material = SimpleMaterial(color: .red, isMetallic: true)
     let sphereEntity = ModelEntity(mesh: sphereMesh, materials: [material])
@@ -70,7 +70,15 @@ struct ImmersiveView: View {
     return sphereEntity
   }
   
-  func createMarker(name: String, radius: Float, length: Float) -> ModelEntity {
+  private func createMakerForHand(name: String) -> ModelEntity {
+    createMarker(name: name, radius: 0.005, length: 0.1)
+  }
+  
+  private func createMakerForFinger(name: String) -> ModelEntity {
+    createMarker(name: name, radius: 0.001, length: 0.03)
+  }
+  
+  private func createMarker(name: String, radius: Float, length: Float) -> ModelEntity {
       let originEntity = ModelEntity(mesh: .generateSphere(radius: radius),
                                      materials: [SimpleMaterial(color: .white, isMetallic: false)])
       let axisLength: Float = length
@@ -84,7 +92,7 @@ struct ImmersiveView: View {
       return originEntity
   }
 
-  func createAxisLine(length: Float, color: UIColor, alignment: Alignment) -> ModelEntity {
+  private func createAxisLine(length: Float, color: UIColor, alignment: Alignment) -> ModelEntity {
       let thickness: Float = 0.003
       var size: SIMD3<Float>
       var position: SIMD3<Float>

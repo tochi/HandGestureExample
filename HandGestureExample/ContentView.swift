@@ -41,7 +41,7 @@ struct ContentView: View {
     }
   }
   
-  func handAnchorLogView(title: String, handAnchorOriginFromAnchorTransform: simd_float4x4?) -> some View {
+  private func handAnchorLogView(title: String, handAnchorOriginFromAnchorTransform: simd_float4x4?) -> some View {
     VStack(alignment: .leading) {
       Text("\(title) Hand Anchor")
         .font(.title)
@@ -57,7 +57,7 @@ struct ContentView: View {
     }
   }
   
-  func fingerAnchorLogView(title: String, originFromFingerTransform: simd_float4x4?, fingerAnchorFromJointTransform: simd_float4x4?) -> some View {
+  private func fingerAnchorLogView(title: String, originFromFingerTransform: simd_float4x4?, fingerAnchorFromJointTransform: simd_float4x4?) -> some View {
     VStack(alignment: .leading) {
       Text("\(title) Finger Tip Anchor")
         .font(.title)
@@ -73,11 +73,11 @@ struct ContentView: View {
     }
   }
   
-  func roundUp(_ value: Float) -> Float {
+  private func roundUp(_ value: Float) -> Float {
     floor(value * 1000) / 1000
   }
   
-  func handDirectionView(title: String, xLeftSideFinger: Float?, xRightSideFinger: Float?) -> some View {
+  private func handDirectionView(title: String, xLeftSideFinger: Float?, xRightSideFinger: Float?) -> some View {
     if let xLeft = xLeftSideFinger, let xRight = xRightSideFinger {
       var value = "Back"
       if (xRight < xLeft) {
