@@ -1,5 +1,4 @@
 import ARKit
-import SwiftUI
 
 @MainActor
 class HandGestureModel: ObservableObject, @unchecked Sendable {
