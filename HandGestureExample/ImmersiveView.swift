@@ -60,6 +60,7 @@ struct ImmersiveView: View {
     .task {
       await gestureModel.monitorSessionEvents()
     }
+    .persistentSystemOverlays(.hidden)
   }
   
   private func createSphere(name: String) -> ModelEntity {
